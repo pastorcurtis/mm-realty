@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pastorcurtis.github.io/mm-realty/sitemap.xml

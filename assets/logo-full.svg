@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" role="img" aria-label="M&amp;M Realty Inc.">
+  <rect width="300" height="64" fill="#080808"/>
+  <g transform="translate(8 8)" fill="none">
+    <rect x="1.5" y="1.5" width="45" height="45" stroke="#c9a96e" stroke-width="1.5"/>
+    <path d="M10 15 L24 7 L38 15" stroke="#c9a96e" stroke-width="1.5"/>
+    <path d="M10 39 V19 L17 28 L24 19 L31 28 L38 19 V39" stroke="#f5f2ed" stroke-width="2.2" stroke-linecap="square"/>
+    <path d="M24 19 V39" stroke="#f5f2ed" stroke-width="2.2" stroke-linecap="square"/>
+  </g>
+  <text x="70" y="36" font-family="Cormorant Garamond, Georgia, serif" font-size="26" fill="#f5f2ed" letter-spacing="1">M&amp;M Realty</text>
+  <text x="71" y="51" font-family="Inter, Arial, sans-serif" font-size="8.5" fill="#c9a96e" letter-spacing="3.2">WHERE DIGNITY COMPOUNDS.</text>
+</svg>

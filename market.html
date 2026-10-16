@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Market View &mdash; M&amp;M Realty Inc.</title>
+  <meta name="description" content="Delaware housing market data and the underwriting assumptions behind M&amp;M Realty&rsquo;s model project.">
+  <meta property="og:title" content="Market View &mdash; M&amp;M Realty Inc.">
+  <meta property="og:description" content="Delaware housing market data and the underwriting assumptions behind M&amp;M Realty&rsquo;s model project.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <style>
+    /* Dashboard-specific styles */
+    .dashboard__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+      margin-top: var(--space-3xl);
+    }
+
+    .dashboard__panel {
+      background: var(--charcoal);
+      border: var(--border-whisper);
+      border-radius: var(--radius-md);
+      padding: var(--space-xl);
+    }
+
+    .dashboard__panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+    }
+
+    .dashboard__panel-title {
+      font-family: var(--font-utility);
+      font-size: var(--text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--champagne);
+    }
+
+    .dashboard__panel-badge {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      color: var(--silver);
+      padding: 2px 8px;
+      border: 1px solid var(--champagne-whisper);
+      border-radius: 2px;
+    }
+
+    /* Bar Chart */
+    .dashboard__chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-xs);
+      height: 200px;
+      padding-top: var(--space-sm);
+    }
+
+    .dashboard__bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-xs);
+      height: 100%;
+      justify-content: flex-end;
+    }
+
+    .dashboard__bar {
+      width: 100%;
+      background: linear-gradient(to top, var(--champagne-dim), var(--champagne));
+      border-radius: 2px 2px 0 0;
+      min-height: 4px;
+      transition: height 1.5s var(--ease-out);
+    }
+
+    .dashboard__bar--arctic {
+      background: linear-gradient(to top, rgba(168, 197, 214, 0.3), var(--arctic));
+    }
+
+    .dashboard__bar-label {
+      font-family: var(--font-utility);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--ash);
+      text-transform: uppercase;
+    }
+
+    /* Metric Row */
+    .dashboard__metrics {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .dashboard__metric {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--champagne-whisper);
+    }
+
+    .dashboard__metric:last-child {
+      border-bottom: none;
+    }
+
+    .dashboard__metric-label {
+      font-size: var(--text-sm);
+      color: var(--silver);
+    }
+
+    .dashboard__metric-value {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      color: var(--ivory);
+      font-weight: var(--fw-light);
+    }
+
+    .dashboard__metric-change {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      margin-left: var(--space-xs);
+    }
+
+    .dashboard__metric-change--up {
+      color: var(--champagne);
+    }
+
+    .dashboard__metric-change--down {
+      color: var(--arctic);
+    }
+
+    /* Trend Indicators */
+    .dashboard__trends {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .dashboard__trend {
+      text-align: center;
+      padding: var(--space-md);
+      border: var(--border-whisper);
+      border-radius: var(--radius-sm);
+    }
+
+    .dashboard__trend-value {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      color: var(--ivory);
+    }
+
+    .dashboard__trend-label {
+      font-family: var(--font-utility);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-top: var(--space-2xs);
+    }
+
+    /* Full-width panel */
+    .dashboard__panel--full {
+      grid-column: 1 / -1;
+    }
+  
+    /* Phone layout. Must live here: this inline block loads after responsive.css,
+       so its desktop grid rules would otherwise override the mobile ones. */
+    /* Taller chart so it fills its panel beside the market list */
+    #marketChart { height: 300px; }
+
+    @media (max-width: 768px) {
+      #marketChart { height: 180px; }
+      .dashboard__grid { grid-template-columns: 1fr; }
+      .dashboard__trends { grid-template-columns: repeat(2, 1fr); }
+      .dashboard__panel { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__brand"><svg class="nav__logo" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="45" height="45" stroke="#c9a96e" stroke-width="1.5"/><path d="M10 15 L24 7 L38 15" stroke="#c9a96e" stroke-width="1.5"/><path d="M10 39 V19 L17 28 L24 19 L31 28 L38 19 V39" stroke="#f5f2ed" stroke-width="2.2" stroke-linecap="square"/><path d="M24 19 V39" stroke="#f5f2ed" stroke-width="2.2" stroke-linecap="square"/></svg><span>M&amp;M Realty</span></a>
+      <div class="nav__links">
+        <a href="mission.html" class="nav__link">Mission</a>
+        <a href="focus.html" class="nav__link">Focus</a>
+        <a href="market.html" class="nav__link">Market</a>
+        <a href="standard.html" class="nav__link">Our Standard</a>
+        <a href="contact.html" class="nav__link nav__link--cta">Partner With Us</a>
+      </div>
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="nav__mobile" aria-hidden="true">
+    <a href="mission.html" class="nav__mobile-link">Mission</a>
+    <a href="focus.html" class="nav__mobile-link">Focus</a>
+    <a href="market.html" class="nav__mobile-link">Market</a>
+    <a href="standard.html" class="nav__mobile-link">Our Standard</a>
+    <a href="contact.html" class="nav__mobile-link">Partner With Us</a>
+  </div>
+
+  <main>
+    <section style="padding-top: calc(var(--section-pad) + 80px); background: var(--void);" aria-labelledby="page-title">
+      <div class="container">
+        <p class="section-label reveal">Delaware Market View</p>
+        <h1 class="section-title reveal" id="page-title" style="font-size: var(--text-4xl);">The Numbers We Underwrite From</h1>
+        <p class="section-text reveal">Underwriting as Honesty: every assumption below is set against a real market figure.</p>
+        <div class="divider reveal"></div>
+      </div>
+    </section>
+
+    <section style="background: var(--obsidian); padding-top: var(--space-2xl);" aria-label="Market dashboard">
+      <div class="container">
+
+        <div class="mpi-teaser__stats stagger-children" style="margin-top: 0;">
+          <div class="mpi-teaser__stat">
+            <div class="stat">
+              <div class="stat__number" data-counter="1732" data-prefix="$">$0</div>
+              <div class="stat__label">Avg. Monthly Rent</div>
+            </div>
+          </div>
+          <div class="mpi-teaser__stat">
+            <div class="stat">
+              <div class="stat__number" data-counter="401" data-prefix="$" data-suffix="K">$0K</div>
+              <div class="stat__label">Median Home Price</div>
+            </div>
+          </div>
+          <div class="mpi-teaser__stat">
+            <div class="stat">
+              <div class="stat__number" data-counter="5.6" data-suffix="%">0%</div>
+              <div class="stat__label">Rental Vacancy</div>
+            </div>
+          </div>
+          <div class="mpi-teaser__stat">
+            <div class="stat">
+              <div class="stat__number" data-counter="4.7" data-suffix="%">0%</div>
+              <div class="stat__label">Unemployment (U.S. 4.1%)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard__grid">
+
+          <!-- Sources & uses of the model project, as a share of total cost -->
+          <div class="dashboard__panel reveal">
+            <div class="dashboard__panel-header">
+              <span class="dashboard__panel-title">Model Project: Where the Money Comes From</span>
+              <span class="dashboard__panel-badge">Illustrative</span>
+            </div>
+            <div class="dashboard__chart-bars" id="marketChart">
+              <div class="dashboard__bar-group">
+                <div class="dashboard__bar" data-height="100" style="height: 0%;"></div>
+                <span class="dashboard__bar-label">Cost $2.5M</span>
+              </div>
+              <div class="dashboard__bar-group">
+                <div class="dashboard__bar" data-height="75" style="height: 0%;"></div>
+                <span class="dashboard__bar-label">Loan $1.875M</span>
+              </div>
+              <div class="dashboard__bar-group">
+                <div class="dashboard__bar dashboard__bar--arctic" data-height="25" style="height: 0%;"></div>
+                <span class="dashboard__bar-label">Equity $625K</span>
+              </div>
+              <div class="dashboard__bar-group">
+                <div class="dashboard__bar" data-height="53" style="height: 0%;"></div>
+                <span class="dashboard__bar-label">Sales $1.32M</span>
+              </div>
+              <div class="dashboard__bar-group">
+                <div class="dashboard__bar dashboard__bar--arctic" data-height="12" style="height: 0%;"></div>
+                <span class="dashboard__bar-label">Perm $309K</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard__panel reveal">
+            <div class="dashboard__panel-header">
+              <span class="dashboard__panel-title">Delaware Market</span>
+              <span class="dashboard__panel-badge">Sept 2026</span>
+            </div>
+            <div class="dashboard__metrics">
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-label">Average Monthly Rent</span>
+                <span class="dashboard__metric-value">$1,732</span>
+              </div>
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-label">Median Home Price (Statewide)</span>
+                <span class="dashboard__metric-value">$401K</span>
+              </div>
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-label">Median Home Price (Sussex County)</span>
+                <span class="dashboard__metric-value">$439K</span>
+              </div>
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-label">Rental Vacancy</span>
+                <span class="dashboard__metric-value">5.6% <span class="dashboard__metric-change dashboard__metric-change--up">&uarr; from 3.8%</span></span>
+              </div>
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-label">Unemployment (U.S. 4.1%)</span>
+                <span class="dashboard__metric-value">4.7%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard__panel dashboard__panel--full reveal">
+            <div class="dashboard__panel-header">
+              <span class="dashboard__panel-title">Our Underwriting Assumptions</span>
+              <span class="dashboard__panel-badge">Conservative by Design</span>
+            </div>
+            <div class="dashboard__trends">
+              <div class="dashboard__trend">
+                <div class="dashboard__trend-value" data-counter="7" data-suffix="%">0%</div>
+                <div class="dashboard__trend-label">Vacancy Assumed (Market 5.6%)</div>
+              </div>
+              <div class="dashboard__trend">
+                <div class="dashboard__trend-value" data-counter="1550" data-prefix="$">$0</div>
+                <div class="dashboard__trend-label">Target Rent (10% Below Avg.)</div>
+              </div>
+              <div class="dashboard__trend">
+                <div class="dashboard__trend-value" data-counter="350" data-prefix="$" data-suffix="K">$0K</div>
+                <div class="dashboard__trend-label">Cottage Price (Below Median)</div>
+              </div>
+              <div class="dashboard__trend">
+                <div class="dashboard__trend-value" data-counter="75" data-suffix="%">0%</div>
+                <div class="dashboard__trend-label">Loan-to-Cost</div>
+              </div>
+              <div class="dashboard__trend">
+                <div class="dashboard__trend-value" data-counter="3.43" data-suffix="x">0x</div>
+                <div class="dashboard__trend-label">Year-3 Debt Coverage</div>
+              </div>
+              <div class="dashboard__trend">
+                <div class="dashboard__trend-value" data-counter="1.09" data-suffix="x">0x</div>
+                <div class="dashboard__trend-label">Debt Coverage, All Stresses</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <p class="data-note reveal">Delaware market data as of September 2026. Sources: RentCafe (Aug 2026), Redfin (Aug 2026), U.S. Census Housing Vacancy Survey (2025), BLS. Illustrative model project. Figures come from M&amp;M&rsquo;s underwriting model and will be finalized once a specific property is selected.</p>
+      </div>
+    </section>
+
+    <section style="background: var(--void); text-align: center;" aria-label="Lender prompt">
+      <div class="container container--narrow">
+        <h2 class="section-title reveal">See the Full Model</h2>
+        <p class="section-text reveal" style="margin: 0 auto var(--space-xl);">Lenders and investors can request the complete underwriting package, including stress tests and the month-by-month cash flow.</p>
+        <a href="contact.html" class="btn btn--primary reveal">Request the Package</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand">M&amp;M Realty Inc.</div>
+          <p class="footer__tagline">Where Dignity Compounds.</p>
+          <p class="footer__tagline" style="margin-top: var(--space-xs);">Delaware</p>
+        </div>
+        <div class="footer__nav">
+          <div class="footer__nav-group">
+            <h4>Navigate</h4>
+            <a href="mission.html">Mission</a>
+            <a href="focus.html">Focus</a>
+            <a href="market.html">Market</a>
+            <a href="standard.html">Our Standard</a>
+          </div>
+          <div class="footer__nav-group">
+            <h4>Connect</h4>
+            <a href="contact.html">Partner With Us</a>
+            <a href="mailto:ronmartin529@yahoo.com">Email</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">&copy; 2026 M&amp;M Realty Inc. All rights reserved.</span>
+        <div class="footer__legal"><a href="privacy.html">Privacy Policy</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1/dist/lenis.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/nav.js"></script>
+  <script type="module" src="js/animations.js"></script>
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

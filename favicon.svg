@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="M&amp;M Realty">
+  <!-- Frame -->
+  <rect x="1.5" y="1.5" width="45" height="45" stroke="#c9a96e" stroke-width="1.5"/>
+  <!-- Roofline: a gable that crowns the monogram -->
+  <path d="M10 15 L24 7 L38 15" stroke="#c9a96e" stroke-width="1.5" stroke-linejoin="miter"/>
+  <!-- Twin M's sharing a center stem: M + M = one foundation -->
+  <path d="M10 39 V19 L17 28 L24 19 L31 28 L38 19 V39" stroke="#f5f2ed" stroke-width="2.2" stroke-linejoin="miter" stroke-linecap="square"/>
+  <path d="M24 19 V39" stroke="#f5f2ed" stroke-width="2.2" stroke-linecap="square"/>
+</svg>
